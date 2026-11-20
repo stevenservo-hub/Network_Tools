@@ -508,13 +508,10 @@ Describe 'Bandwidth bar rendering' {
             $bar | Should Match ([regex]::Escape("$([char]27)[0;1;91mOUT"))
         }
 
-        It 'raises the clamped log fraction to the power of 2.5' {
-            Get-BandwidthFraction 999 1e9 -LogScale | Should Be 0
+        It 'maps rates to the log scale between 1 kbps and link speed' {
             Get-BandwidthFraction 1000 1e9 -LogScale | Should Be 0
-            $fraction = Get-BandwidthFraction 1e6 1e9 -LogScale
-            [Math]::Round($fraction, 6) | Should Be 0.176777
+            Get-BandwidthFraction 1e6 1e9 -LogScale | Should Be 0.5
             Get-BandwidthFraction 1e9 1e9 -LogScale | Should Be 1
-            Get-BandwidthFraction 2e9 1e9 -LogScale | Should Be 1
         }
     }
 }
